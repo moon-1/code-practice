@@ -1,76 +1,44 @@
-package org.techtown.login;
+package com.practicecode.login2;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.widget.TextView;
+public class LoginActivity extends AppCompatActivity{
 
-import com.google.gson.Gson;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-public class LoginActivity extends AppCompatActivity {
-
-    private TextView textViewResult;
-    private Gson mGson;
-    private Retrofit mRetrofit;
-    private RetrofitAPI mRetrofitAPI;
-    private Call<String> mCallUserList;
+    TextView registerButton,findButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test);
-        textViewResult = findViewById(R.id.text_view_result);
-        setRetrofitInit();
-        callUserList();
+        setContentView(R.layout.activity_login);
+
+        findButton = (TextView)findViewById(R.id.findButton);
+        registerButton = (TextView)findViewById(R.id.registerButton);
+
+        findButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                Intent findIntent = new Intent(LoginActivity.this, FindActivity.class);
+                LoginActivity.this.startActivity(findIntent);
+            }
+
+        });
+        registerButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                LoginActivity.this.startActivity(registerIntent);
+            }
+
+        });
 
     }
-
-    private void setRetrofitInit() {
-        mRetrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.165:12339/test?Hello")
-                 .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        mRetrofitAPI = mRetrofit.create(RetrofitAPI.class);
-    }
-
-    private void callUserList() {
-
-        mCallUserList = mRetrofitAPI.getUserList();
-        mCallUserList.enqueue(mRetrofitCallback);
-
-    }
-
-    private Callback<String> mRetrofitCallback = new Callback<String>() {
-
-        @Override
-        public void onResponse(Call<String> call, Response<String> response) {
-            String result = response.body();
-            UserList userList = (UserList) mGson.fromJson(result,UserList.class);
-
-            for (userList: result) {
-                String content = "";
-                content += "Num: " + userList.getUserNum() + "\n";
-                content += "User ID: " + userList.getId() + "\n";
-                content += "PASSOWRD: " + userList.getPassword()+ "\n";
-                content += "Email: " + userList.getEmail() + "\n";
-                content += "Phone" + userList.getPhone() + "\n";
-
-            textViewResult.append(content);
-        }
-
-        @Override
-        public void onFailure(Call<String> call, Throwable t) {
-            t.printStackTrace();
-        }
-    }
-
-
 }
