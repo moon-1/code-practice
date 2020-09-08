@@ -2,34 +2,36 @@
 #include <iostream>
 #include <stack>
 #include <string>
+#include <cstring>
 #define MAX 100
 using namespace std;
 int main()
 {
-	int i;
+	int i,j=0;
 	char word[MAX];
 	char buf;
-	int count[23] = {0,};
+	int count[28] = {0,};
+	memset(word,0,sizeof(word));
 	stack<char> alpha;
 	cout << "단어를 입력하시오";
 	cin >> word;
-	for(i = 97 ; i <= 122 ; i++)
+	for(i = 122 ; i >= 97 ; i--)
 	{
-		buf = (char)i;
+		buf = (char)(i);
 		alpha.push(buf);
 	}
 	i=0;
-	while(!alpha.empty())
+	while(i<26)
 	{
+		j=0;
 		buf=alpha.top();
 		alpha.pop();
-		int j =0;
-		while(word[j]!='\n')
+		while(word[j]!=0)
 		{
 			if(buf==word[j]) count[j]++;
 			j++;
-		}
-		cout << count[i] + " ";
+		}	
+		cout << count[i] << " ";
 		i++;
 	}
 	return 0;
