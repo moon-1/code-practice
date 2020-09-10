@@ -28,7 +28,9 @@ int main()
 		alpha.pop();
 		while(word[j]!=0)
 		{
-			if(buf==word[j]) count[j]++;
+			if(buf==word[j]){
+			       	count[i] = count[i]+1;
+			}
 			j++;
 		}	
 		cout << count[i] << " ";
